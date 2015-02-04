@@ -84,29 +84,33 @@ current locale:
     end
 
     module FinderMethods
-      # FriendlyId overrides this method to make it possible to use friendly id's
-      # identically to numeric ids in finders.
-      #
-      # @example
-      #  person = Person.find(123)
-      #  person = Person.find("joe")
-      #
-      # @see FriendlyId::ObjectUtils
-      def find_one(id)
-        return super if id.unfriendly_id?
-        found = where(@klass.friendly_id_config.query_field => id).first
-        found = includes(:translations).
-                where(translation_class.arel_table[:locale].in([I18n.locale, I18n.default_locale])).
-                where(translation_class.arel_table[@klass.friendly_id_config.query_field].eq(id)).first if found.nil?
 
-        if found
-          # Reload the translations for the found records.
-          found.tap { |f| f.translations.reload }
-        else
-          # if locale is not translated fallback to default locale
-          super
-        end
-      end
+      #
+      #  Commented out because overriding #find is a terrible idea
+      #
+      # # FriendlyId overrides this method to make it possible to use friendly id's
+      # # identically to numeric ids in finders.
+      # #
+      # # @example
+      # #  person = Person.find(123)
+      # #  person = Person.find("joe")
+      # #
+      # # @see FriendlyId::ObjectUtils
+      # def find_one(id)
+      #   return super if id.unfriendly_id?
+      #   found = where(@klass.friendly_id_config.query_field => id).first
+      #   found = includes(:translations).
+      #           where(translation_class.arel_table[:locale].in([I18n.locale, I18n.default_locale])).
+      #           where(translation_class.arel_table[@klass.friendly_id_config.query_field].eq(id)).first if found.nil?
+
+      #   if found
+      #     # Reload the translations for the found records.
+      #     found.tap { |f| f.translations.reload }
+      #   else
+      #     # if locale is not translated fallback to default locale
+      #     super
+      #   end
+      # end
 
       protected :find_one
 
