@@ -86,13 +86,16 @@ method.
     # Adds a finder that explictly uses slugs from the slug table.
     module FinderMethods
 
-      # Search for a record in the slugs table using the specified slug.
-      def find_one(id)
-        return super(id) if id.unfriendly_id?
-        where(@klass.friendly_id_config.query_field => id).first or
-        with_old_friendly_id(id) {|x| find_one_without_friendly_id(x)} or
-        find_one_without_friendly_id(id)
-      end
+      #
+      #  Commented out because overriding #find is a terrible idea
+      #
+      # # Search for a record in the slugs table using the specified slug.
+      # def find_one(id)
+      #   return super(id) if id.unfriendly_id?
+      #   where(@klass.friendly_id_config.query_field => id).first or
+      #   with_old_friendly_id(id) {|x| find_one_without_friendly_id(x)} or
+      #   find_one_without_friendly_id(id)
+      # end
 
       # Search for a record in the slugs table using the specified slug.
       def exists?(id = false)
